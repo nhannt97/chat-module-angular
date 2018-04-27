@@ -1,6 +1,5 @@
 require('../css/style.css');
 let async = require('async');
-let DialogUtils = require('../dialogs/DialogUtils.js');
 let moduleName = componentName = 'chatModule';
 angular.module(moduleName, ['ngFileUpload'])
         .component(componentName, {
@@ -12,8 +11,9 @@ function Controller(apiService, $interval, $timeout, ModalService, $scope, $http
         let self = this;
         this.showChat = false;
         this.show = false;
-        let token = window.localStorage.token;
-        let LProject = JSON.parse(window.localStorage.LProject);
+        
+        let token = window.localStorage.token?window.localStorage.token:'';
+        let LProject = window.localStorage.LProject?JSON.parse(window.localStorage.LProject):{};
         function getUser() {
                 if (token)
                         apiService.getUser({username: window.localStorage.username}, (res) => {
@@ -55,14 +55,22 @@ function Controller(apiService, $interval, $timeout, ModalService, $scope, $http
                 }
 
         }
+        if(token) {
+            apiService.getUser({username: window.localStorage.username}, (res) => {
+                if (res) {
+                    self.user = res;
+                    getProject();
+                }
+            });
+        }
         $interval(function () {
                 let newToken = window.localStorage.token;
                 if (newToken && newToken != token) {
                         token = newToken;
                         getUser();
                 }
-                let newLProject = JSON.parse(window.localStorage.LProject);
-                if (((newLProject.name && newLProject.name != LProject.name) || !LProject.name) && self.user) {
+                let newLProject = window.localStorage.LProject?JSON.parse(window.localStorage.LProject):{};
+                if (((!LProject && newLProject) || (LProject.name!=newLProject.name)) && self.user) {
                         LProject = newLProject;
                         getProject();
                 }

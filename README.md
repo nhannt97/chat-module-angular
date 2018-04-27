@@ -1,1 +1,1 @@
-# chat-module-angular
+# wi-messenger-angular
