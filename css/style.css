@@ -1,5 +1,5 @@
 
-/*** PANEL PRIMARY ***/
+/*** PANEL primary ***/
 chat-module .with-nav-tabs.panel-primary .nav-tabs > li > a,
 chat-module .with-nav-tabs.panel-primary .nav-tabs > li > a:hover,
 chat-module .with-nav-tabs.panel-primary .nav-tabs > li > a:focus {
@@ -38,38 +38,81 @@ chat-module .with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu 
 chat-module .with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > .active > a:focus {
     background-color: #4a9fe9;
 }
+/*** PANEL success ***/
+chat-module .panel-success {
+    border-color: #3c763d;
+}
+chat-module .panel-success>.panel-heading {
+    color: #3c763d;
+    background-color: #3c763d;
+    border-color: #3c763d;
+}
+chat-module .with-nav-tabs.panel-success .nav-tabs > li > a,
+chat-module .with-nav-tabs.panel-success .nav-tabs > li > a:hover,
+chat-module .with-nav-tabs.panel-success .nav-tabs > li > a:focus {
+    color: #fff;
+}
+chat-module .with-nav-tabs.panel-success .nav-tabs > .open > a,
+chat-module .with-nav-tabs.panel-success .nav-tabs > .open > a:hover,
+chat-module .with-nav-tabs.panel-success .nav-tabs > .open > a:focus,
+chat-module .with-nav-tabs.panel-success .nav-tabs > li > a:hover,
+chat-module .with-nav-tabs.panel-success .nav-tabs > li > a:focus {
+	color: #fff;
+	background-color: #3c763d;
+	border-color: transparent;
+}
+chat-module .with-nav-tabs.panel-success .nav-tabs > li.active > a,
+chat-module .with-nav-tabs.panel-success .nav-tabs > li.active > a:hover,
+chat-module .with-nav-tabs.panel-success .nav-tabs > li.active > a:focus {
+	color: #3c763d;
+	background-color: #fff;
+	border-color: #3c763d;
+	border-bottom-color: transparent;
+}
+chat-module .with-nav-tabs.panel-success .nav-tabs > li.dropdown .dropdown-menu {
+    background-color: #3c763d;
+    border-color: #3c763d;
+}
+chat-module .with-nav-tabs.panel-success .nav-tabs > li.dropdown .dropdown-menu > li > a {
+    color: #fff;   
+}
+chat-module .with-nav-tabs.panel-success .nav-tabs > li.dropdown .dropdown-menu > li > a:hover,
+chat-module .with-nav-tabs.panel-success .nav-tabs > li.dropdown .dropdown-menu > li > a:focus {
+    background-color: #3c763d;
+}
+chat-module .with-nav-tabs.panel-success .nav-tabs > li.dropdown .dropdown-menu > .active > a,
+chat-module .with-nav-tabs.panel-success .nav-tabs > li.dropdown .dropdown-menu > .active > a:hover,
+chat-module .with-nav-tabs.panel-success .nav-tabs > li.dropdown .dropdown-menu > .active > a:focus {
+    background-color: #3c763d;
+}
 chat-module .nav>li>a {
     padding: 5px 8px;
     font-weight: bold;
 }
 chat-module .panel-heading {
-    padding: 2px 5px;
+    padding: 0px;
+    border-bottom: none;
 }
 chat-module .panel-body {
     padding: 0px;
 }
 chat-module .tab-pane {
-    height: 100%;
+    /* height: 100%; */
 }
 /***************************************************************************************************/
 
-chat-module #chat-module {
+chat-module .chat-module {
     font-size: 12px;
     position: absolute;
-    z-index: 100;
-    top: 26px;
-    right: 5px;
-}
-.height-100 {
-    height: 100%;
-}
-chat-module #icon {
-    color: #428bca;
-    font-size: 50px;
-}
-chat-module #chat-frame {
+    bottom: 0px;
     width: 320px;
-    height: 350px;
+    z-index: 100;
+    right: 0px;
+}
+
+chat-module #chat-frame {
+    width: 100%;
+    /* height: 350px; */
     background: #fff;
 }
 chat-module .config {
@@ -77,8 +120,7 @@ chat-module .config {
     padding: 5px 6px;
     font-size: 14px;
 }
-chat-module #list-message {
-    height: 80%;
+chat-module .list-message {
     padding: 10px;
     overflow-y: overlay;
 }
@@ -87,20 +129,16 @@ chat-module .message {
     word-break: keep-all;
     word-wrap: break-word;
 }
-chat-module #cur-message {
-    height: 20%;
-    border-top: 1px solid gainsboro;
+chat-module .text-message {
+    border: 1px solid green;
+    /* height: 100%; */
+    width: 100% !important;
+    padding-right: 40px;
+    min-height:40px;
+    /* height: 50px; */
+    /* padding: 0px; */
 }
-chat-module #text-message {
-    border: none;
-    height: 100%;
-    width: 100%;
-    padding: 0px;
-}
-chat-module #text-message:focus {
-    outline: none !important;
-    border: none;
-}
+
 chat-module span {
     margin-right: 10px;
 }

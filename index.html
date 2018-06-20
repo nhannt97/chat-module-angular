@@ -1,119 +1,33 @@
 <script>
-    var socket = io('http://13.251.24.65:5000');
+    var socket = io('http://13.251.24.65:5005');
     // var socket = io('http://localhost:5000');
 </script>
-<div id="chat-module" ng-show="cm.showChat">
-    <i id="icon" class="fa fa-comments cursor-pointer" ng-show="!cm.show" ng-mouseup="cm.show=(cm.moving)?false:true">
-    </i>
-    <div id="chat-frame" ng-show="cm.show">
-        <div class="panel with-nav-tabs panel-primary height-100">
-            <div class="panel-heading" id="title-bar" style="height: 10%;">
+<div ng-init="cm.draggable()" ng-mousedown="cm.onMouseDown()"
+    class="chat-module" style="right: {{cm.right}};bottom: {{cm.bottom}}" ng-if="cm.initChatGroup || cm.initHelpDesk" ng-show="cm.initChatGroup || cm.initHelpDesk">
+    <div id="chat-frame" ng-show="cm.showChatFrame()">
+        <div class="panel with-nav-tabs panel-{{cm.class}}">
+            <div class="panel-heading title-bar">
                 <ul class="nav nav-tabs">
-                    <li class="active tab-chat" id="pill-chat" style="max-width: 100px">
-                        <a href="#tab-chat" data-toggle="tab" style="white-space: nowrap;overflow-x: hidden;text-overflow: ellipsis;">
-                            {{cm.conver.name}}
+                    <li class="active tab-chat" id="pill-active" style="max-width: 100px">
+                        <a href="#chat-{{cm.groupName}}" data-toggle="tab" style="white-space: nowrap;overflow-x: hidden;text-overflow: ellipsis;">
+                            {{cm.groupName}}
                         </a>
                     </li>
-                    <li id="pill-active" ng-click="cm.refreshActive()">
-                        <a href="#tab-members" data-toggle="tab">Members</a>
+                    <li id="pill-active" ng-if="cm.groupName!='Help_Desk'" class="members">
+                        <a href="#members-{{cm.groupName}}" data-toggle="tab">Members({{cm.groupName}})</a>
                     </li>
-                    <li id="pill-active" ng-click="cm.refreshActive()">
-                        <a href="#tab-helpdev" data-toggle="tab">HelpDev</a>
-                    </li>
-                    <li style="float: right" class="cursor-pointer" ng-click="cm.show=false">
+                    <li style="float: right" class="cursor-pointer" ng-click="cm.hideChatFrame()">
                         <i class="fa fa-minus config"></i>
                     </li>
-                    <!-- <li style="float: right" class="cursor-pointer">
-                        <i class="fa fa-cog config"></i>
-                    </li>
-                    <li style="float: right" class="cursor-pointer" ng-click="cm.addUserToConver()">
-                        <i class="fa fa-plus config"></i>
-                    </li> -->
                 </ul>
             </div>
-            <div class="panel-body" style="height: 90%;">
-                <div class="tab-content height-100">
-                    <div class="tab-pane fade in active height-100" id="tab-chat">
-                        <div id="list-message" ngf-drop="cm.upload($files)" class="drop-box"
-                            ngf-drag-over-class="'dragover'" ngf-multiple="true">
-                            <div class="row" ng-repeat="message in cm.conver.Messages | orderBy : 'createdAt'">
-                                <div ng-if="message.User.username!=cm.user.username" style="width: 70%; float: left;margin-bottom: 2px">
-                                    <p style="font-weight: bold; margin-top: 3px; margin-bottom: 3px">{{message.User.username}}</p>
-                                    <div ng-if="message.type!='image'" style="background: #e6e6e6; border-radius: 10px; display: inline-block; padding: 6px 8px ;max-width: 100%">
-                                        <p class="message" ng-bind-html="message.content" style=" display: inline;" ng-if="message.type=='text'">
-                                        </p>
-                                        <p class="message" style=" display: inline;" ng-if="message.type=='file'">
-                                            <a href="{{cm.download(message.content)}}" download="{{message.content.slice(59+(cm.conver.name.length))}}">
-                                                <i class="glyphicon glyphicon-circle-arrow-down"></i>
-                                                {{message.content.slice(59+(cm.conver.name.length))}}
-                                            </a>
-                                        </p>
-                                    </div>
-                                    <div ng-if="message.type=='image'" style=" display: inline-block;max-width: 100%">
-                                        <p class="message" style=" display: inline;" >
-                                            <a href="{{cm.download(message.content)}}" download="{{message.content.slice(59+(cm.conver.name.length))}}">
-                                                <img src="{{message.content}}" style="max-width: 100%; max-height: 70%;;border: 1px solid #ddd;border-radius: 4px;">
-                                            </a>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div ng-if="message.User.username==cm.user.username" style="width: 70%; float: right;margin-bottom: 2px">
-                                    <div ng-if="message.type!='image'" style="background: #428bca; border-radius: 10px; float: right; display: inline-block;padding: 6px 8px;max-width: 100%">
-                                        <p class="message" ng-bind-html="message.content" style="color: #fff;display: inline; " ng-if="message.type=='text'">
-                                        </p>
-                                        <p class="message" style=" display: inline;" ng-if="message.type=='file'">
-                                            <a href="{{cm.download(message.content)}}" download="{{message.content.slice(59+(cm.conver.name.length))}}" style="color: #fff">
-                                                <i class="glyphicon glyphicon-circle-arrow-down"></i>
-                                                {{message.content.slice(59+(cm.conver.name.length))}}
-                                            </a>
-                                        </p>
-                                    </div>
-                                    <div ng-if="message.type=='image'" style=" float: right; display: inline-block;padding: 6px 8px;max-width: 100%">
-                                        <p class="message" style=" display: inline;">
-                                            <a href="{{cm.download(message.content)}}" download="{{message.content.slice(59+(cm.conver.name.length))}}">
-                                                <img src="{{message.content}}" style="max-width: 100%; max-height: 70%;border: 1px solid #ddd;border-radius: 4px;">
-                                            </a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="cur-message">
-                            <div class="col-sm-12 col-xs-12" style="padding: 0px 5px; height: 60%;">
-                                <textarea id="text-message" rows="2"></textarea>
-                            </div>
-                            <div class="col-sm-12 col-xs-12" style="padding: 0px 5px">
-                                <span class="glyphicon glyphicon-picture cursor-pointer" ngf-select="cm.upload($files)" multiple="multiple" ngf-accept="'image/*'"></span>
-                                <span class="glyphicon glyphicon-paperclip cursor-pointer" ngf-select="cm.upload($files)" multiple="multiple"></span>
-                            </div>
-                        </div>
+            <div class="panel-body">
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="chat-{{cm.groupName}}">
+                        <chat-group conver="cm.conver" user="cm.user" token="cm.token" color="cm.color"></chat-group>
                     </div>
-                    <div class="tab-pane fade height-100" id="tab-members">
-                        <ul style="overflow-y: overlay; height: 100%; padding: 0px 8px;">
-                            <li class="online" ng-repeat="user in cm.listUser">
-                                <i class="fa fa-circle" ng-style="cm.active(user)"></i>
-                                <span class="user">{{user.username}}</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="tab-pane fade height-100" id="tab-helpdev">
-                        <h3>HELP DEV</h3>
-                        <!-- <div id="list-message">
-                            
-                        </div>
-                        <div id="cur-message">
-                            <div class="col-sm-12 col-xs-12" style="padding: 0px 5px; height: 60%;">
-                                <textarea id="" rows="2"></textarea>
-                            </div>
-                            <div class="col-sm-12 col-xs-12" style="padding: 0px 5px">
-                                <span class="glyphicon glyphicon-picture cursor-pointer" ngf-select ng-model="cm.images" accept='image/*' ngf-multiple="true"
-                                    ngf-model-invalid="errorFile" ng-change="cm.sendImage(cm.images)">
-                                </span>
-                                <span class="glyphicon glyphicon-paperclip cursor-pointer" ngf-select ng-model="cm.files" ngf-multiple="true" ngf-model-invalid="errorFile"
-                                    ng-change="cm.sendFile(cm.files)">
-                                </span>
-                            </div>
-                        </div> -->
+                    <div class="tab-pane fade" id="members-{{cm.groupName}}" ng-if="cm.groupName!='Help_Desk'">
+                        <list-user list-user="cm.listUser" user="cm.user" id-conversation="cm.conver.id" token="cm.token"></list-user>
                     </div>
                 </div>
             </div>

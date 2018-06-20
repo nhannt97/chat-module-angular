@@ -1,171 +1,159 @@
 require('../css/style.css');
-let async = require('async');
+let chatService = require('../services/api-service.js');
+let chatGroup = require('../components/chat-group/chat-group.js');
+let helpDesk = require('../components/help-desk/help-desk.js');
+let listUser = require('../components/list-user/list-user.js');
 let moduleName = componentName = 'chatModule';
-angular.module(moduleName, ['ngFileUpload'])
+
+angular.module(moduleName, [chatService.name, chatGroup.name, helpDesk.name, listUser.name, 'ngFileUpload'])
         .component(componentName, {
                 template: require('../index.html'),
                 controller: Controller,
-                controllerAs: 'cm'
+                controllerAs: 'cm', 
+                bindings : {
+                        groupName: '<',
+                        groupOwner: '<',
+                        token: '<',
+                        showChatGroup: '=',
+                        showHelpDesk: '='
+                }
         });
-function Controller(apiService, $interval, $timeout, ModalService, $scope, $http, Upload) {
+function Controller(apiService, $scope, $element, $timeout) {
         let self = this;
-        this.showChat = false;
-        this.show = false;
+        this.conver = {};
+        this.token = '';
+        this.$onInit = function() {
+                console.log(self);
+                if(self.groupName=='Help_Desk') {
+                        self.color = "#3c763d";
+                        self.listUser = [];      
+                        self.initHelpDesk = true;
+                        self.class = 'success';
+                } 
+                else {
+                        self.class = 'primary';
+                        self.color = "#428bca";
+                }
+                initChat(self.token, self.groupName, self.groupOwner);
+        }
+        $scope.$watch(function() {return self.groupName=='Help_Desk'?self.showHelpDesk:self.showChatGroup;}, function(newValue, oldValue) {
+                
+                if(newValue) {
+                        if(self.groupName!='Help_Desk' && self.listUser && self.listUser.length<=2) {
+                                self.showChatGroup = false;
+                                toastr.error('No shared project is opening');
+                        }
+                        console.log(oldValue, newValue, self.groupName);
+                        $element.find('.chat-module').css('right', '0px');
+                        $element.find('.chat-module').css('bottom', '0px');
+                        $element.find('.chat-module').css('left', 'auto !important');
+                        $element.find('.chat-module').css('top', 'auto !important');
+                }
+        })
         
-        let token = window.localStorage.token?window.localStorage.token:'';
-        let LProject = window.localStorage.LProject?JSON.parse(window.localStorage.LProject):{};
-        function getUser() {
-                if (token)
-                        apiService.getUser({username: window.localStorage.username}, (res) => {
-                                if (res) {
-                                        self.user = res;
-                                }
-                        });
-        }
-        function getListUser() {
+        $scope.$watch(function() {return self.groupName}, function handleChange(newValue, oldValue) {
+                if(oldValue!=newValue) {
+                        if(!newValue) {
+                                self.initChatGroup = false;
+                                self.showChatGroup= false;
+                                self.showHelpDesk = false;
+                                socket.emit('off-project', {idConversation: self.conver.id, username: self.user.username});
+                        }
+                        initChat(self.token, self.groupName, self.groupOwner);
+                }
+        });
+        function getListUser(projectName, projectOwner, cb) {
                 apiService.getListUserOfProject({
-                        name: LProject.name,
-                        owner: LProject.owner
-                }, token, (res) => {
-                        if (res)
-                                self.listUser = res;
-                        else
-                                self.listUser = [];
+                        project_name: projectName,
+                        owner: projectOwner
+                }, self.token, (res) => {
+                        cb(res);
                 })
         }
-        function getProject() {
-                if (LProject.shared) {
-                        getListUser();
-                        apiService.getConver({
-                                name: LProject.name,
-                                idUser: [self.user.id]
-                        }, (res) => {
-                                if(res) {
-                                        self.conver = res;
-                                        scrollBottom();
-                                        self.showChat = true;
-                                        console.log(self.showChat);
-                                        socket.emit('join-room', {username: self.user.username, idConversation: self.conver.id});
-                                }
-                                else
-                                        self.conver = {};
-                        })
-                } else {
-                        self.showChat = false;
+        function getChatGroup(projectName) {
+                self.initChatGroup = true;
+                apiService.getConver({
+                        name: projectName
+                }, self.token, (res) => {
+                if(res) {
+                        self.conver = res.conver;
+                        self.user = res.user;
+                        socket.emit('join-room', {username: self.user.username, idConversation: self.conver.id});
                 }
-
-        }
-        if(token) {
-            apiService.getUser({username: window.localStorage.username}, (res) => {
-                if (res) {
-                    self.user = res;
-                    getProject();
-                }
-            });
-        }
-        $interval(function () {
-                let newToken = window.localStorage.token;
-                if (newToken && newToken != token) {
-                        token = newToken;
-                        getUser();
-                }
-                let newLProject = window.localStorage.LProject?JSON.parse(window.localStorage.LProject):{};
-                if (((!LProject && newLProject) || (LProject.name!=newLProject.name)) && self.user) {
-                        LProject = newLProject;
-                        getProject();
-                }
-        });
-
-        function scrollBottom() {
-                $(document).ready(function() {
-                        console.log('scroll');
-                        var d = $('#list-message');
-                        d.scrollTop(d.prop("scrollHeight"));
+                else
+                        self.conver = {};
                 })
         }
-        $('#text-message').keypress(function (e) {
-                if (e.which == 13 && !e.shiftKey) {
-                        let content = $('#text-message').val().split('\n').join('<br/>');
-                        let message = {
-                                content: content,
-                                type: 'text',
-                                idSender: self.user.id,
-                                idConversation: self.conver.id,
-                                User: self.user
-                        };
-                        socket.emit('sendMessage', message);
-                        apiService.postMessage(message, function (res) {
-                        });
-                        e.preventDefault();
-                        $('#text-message').val('');
-                }
-        });
-        this.upload = function (files) {
-                async.forEachOfSeries(files, (file, i, _done) => {
-                        let type = file.type.substring(0, 5);
-                        apiService.upload({
-                                file: file,
-                                fields: {'name': self.conver.name}
-                        }, (res) => {
-                                let message = {
-                                        content: res,
-                                        type: type=='image'?'image':'file',
-                                        idSender: self.user.id,
-                                        idConversation: self.conver.id,
-                                        User: self.user
+        
+        function initChat(token, projectName, projectOwner) {
+                if(!token)
+                        toastr.error('Authentization fail');
+                else {
+                        if(projectName=='Help_Desk') {
+                                getChatGroup(projectName+'-'+projectOwner);
+                        } 
+                        else {
+                                if(projectName) {
+                                        if(self.conver.id) socket.emit('off-project', {idConversation: self.conver.id, username: self.user.username});
+                                        getListUser(projectName, projectOwner, function(res) {
+                                                if(res) {
+                                                        self.listUser = res;
+                                                        if(self.listUser.length >= 2) {
+                                                                getChatGroup(projectName);
+                                                        } 
+                                                        else {
+                                                                self.showChatGroup= false;
+                                                                self.showHelpDesk = false;
+                                                        }
+                                                }else {
+                                                        self.listUser = [];
+                                                        self.showChatGroup= false;
+                                                        self.showHelpDesk = false;
+                                                }
+                                        });
+                                } else {
+                                        self.projectName = '';
+                                        if(self.conver.id)
+                                                socket.emit('off-project', {idConversation: self.conver.id, username: self.user.username});
                                 }
-                                socket.emit('sendMessage', message);
-                                apiService.postMessage(message, (res) => {
-                                        _done();
-                                });
-                        })
-                }, (err) => {
+                        }
+                }
+        }
+        this.showChatGroup = function() {
+                return self.groupName=='Help_Desk' || self.listUser.length>=2;
+        }
+        
+        this.draggable = function() {
+                $element.find( ".chat-module" ).draggable({
+                        start: function() {
+                                console.log('************* start ');
+                                self.moving = true;
+                                swapChatModule();
+                        },
+                        drag: function() {
 
+                        },
+                        stop: function() {
+                                self.moving = false;
+                        }
                 });
         }
-        this.download = function(path) {
-                let p = path.slice(25);
-                return 'http://13.251.24.65:5000/download/'+p;
+        this.onMouseDown = function($event) {
+                swapChatModule();
         }
-        socket.on('connection', function (data) {
-                console.log(data);
-        });
-        socket.on('sendMessage', function (data) {
-                console.log(data);
-                self.conver.Messages = self.conver.Messages?self.conver.Messages:[];
-                self.conver.Messages.push(data);
-                scrollBottom();
-        });
-        dragChatModule(self);
-};
-function dragChatModule(cm) {
-        let selected = null, x_pos = 0, y_pos = 0, x_elem = 0, y_elem = 0;
-        function _drag_init(elem) {
-                selected = elem;
-                x_elem = x_pos - selected.offsetLeft;
-                y_elem = y_pos - selected.offsetTop;
-        }
-        function _move_elem(e) {
-                x_pos = document.all ? window.event.clientX : e.pageX;
-                y_pos = document.all ? window.event.clientY : e.pageY;
-                if (selected !== null) {
-                        selected.style.left = (x_pos - x_elem) + 'px';
-                        selected.style.top = (y_pos - y_elem) + 'px';
-                        cm.moving = true;
+        function swapChatModule() {
+                let cms = $('chat-module');
+                if ($element.is($(cms[0]))) {
+                        $element.insertAfter($(cms[1]));
                 }
         }
-        function _destroy(evt) {
-                selected = null;
-                cm.moving = false;
+        this.hideChatFrame = function() {
+                if(self.groupName=='Help_Desk') self.showHelpDesk = false;
+                else self.showChatGroup = false;
+                return false;
         }
-        $('#title-bar')[0].onmousedown = function (evt) {
-                _drag_init($('#chat-module')[0]);
-                return false;
-        };
-        $('#icon')[0].onmousedown = function (evt) {
-                _drag_init($('#chat-module')[0]);
-                return false;
-        };
-        document.onmousemove = _move_elem;
-        document.onmouseup = _destroy;
-}
+        this.showChatFrame = function() {
+                if(self.groupName=='Help_Desk') return self.showHelpDesk;
+                return self.showChatGroup;
+        }
+};

@@ -9,11 +9,10 @@ module.exports = {
         ]
     },
     entry: [
-        '../js/app.js',
-        '../services/api-service.js'
+        '../js/app.js'
     ],
     output: {
-        path: path.join(__dirname, '../../wi-angular/build/js'),
-        filename: 'chat-module.bundle.js'
+        path: path.join(__dirname, '../../wi-angular/source/vendor/js'),
+        filename: 'chat-module.webpack.js'
     }
 }
