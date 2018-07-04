@@ -1,0 +1,53 @@
+<div style="height:{{chatGroup.listMessageHeight}}px" class="list-message" ngf-drop="chatGroup.upload($files)" class="drop-box"
+    ngf-drag-over-class="'dragover'" ngf-multiple="true">
+    <div class="row" ng-repeat="message in chatGroup.conver.Messages">
+        <div ng-if="message.User.username!=chatGroup.user.username" class="row" style="color: gray; text-align: center">---{{message.createdAt}}---</div>
+        <div ng-if="message.User.username!=chatGroup.user.username" style="width: 70%; float: left;margin-bottom: 2px">
+            <p ng-if="chatGroup.conver.name.indexOf('Help_Desk')==-1" style="font-weight: bold; margin-top: 3px; margin-bottom: 3px">{{message.User.username}}</p>
+            <p ng-if="chatGroup.conver.name.indexOf('Help_Desk')!=-1" style="font-weight: bold; margin-top: 3px; margin-bottom: 3px">Admin</p>
+            <div ng-if="message.type!='image'" style="background: #e6e6e6; border-radius: 10px; display: inline-block; padding: 6px 8px ;max-width: 100%">
+                <p class="message" ng-bind-html="message.content" style=" display: inline;" ng-if="message.type=='text'">
+                </p>
+                <p class="message" style=" display: inline;" ng-if="message.type=='file'">
+                    <a href="{{chatGroup.download(message.content)}}">
+                        <i class="glyphicon glyphicon-circle-arrow-down"></i>
+                        {{chatGroup.fileName(message.content)}}
+                    </a>
+                </p>
+            </div>
+            <div ng-if="message.type=='image'" style=" display: inline-block;max-width: 100%">
+                <p class="message" style=" display: inline;" >
+                    <a href="{{chatGroup.download(message.content)}}">
+                        <img src="{{chatGroup.thumb(message.content)}}" style="max-width: 70%; max-height: 40%;;border: 1px solid #ddd;border-radius: 4px;">
+                    </a>
+                </p>
+            </div>
+        </div>
+        <div ng-if="message.User.username==chatGroup.user.username" style="width: 70%; float: right;margin-bottom: 2px">
+            <div ng-if="message.type!='image'" style="background: {{chatGroup.color}}; border-radius: 10px; float: right; display: inline-block;padding: 6px 8px;max-width: 100%">
+                <p class="message" ng-bind-html="message.content" style="color: #fff;display: inline; " ng-if="message.type=='text'">
+                </p>
+                <p class="message" style=" display: inline;" ng-if="message.type=='file'">
+                    <a href="{{chatGroup.download(message.content)}}" style="color: #fff">
+                        <i class="glyphicon glyphicon-circle-arrow-down"></i>
+                        {{chatGroup.fileName(message.content)}}
+                    </a>
+                </p>
+            </div>
+            <div ng-if="message.type=='image'" style=" text-align: right; float: right; display: inline-block;padding: 6px 8px;max-width: 100%">
+                <p class="message" style=" display: inline;">
+                    <a href="{{chatGroup.download(message.content)}}">
+                        <img src="{{chatGroup.thumb(message.content)}}" style="max-width: 70%; max-height: 40%;border: 1px solid #ddd;border-radius: 4px;">
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="position:relative;">
+    <textarea class="text-message" rows="2"></textarea>
+    <div style="position: absolute;bottom: 5px;right: 5px;">
+        <span class="glyphicon glyphicon-picture cursor-pointer" ngf-select="chatGroup.upload($files)" multiple="multiple" ngf-accept="'image/*'"></span>
+        <span class="glyphicon glyphicon-paperclip cursor-pointer" ngf-select="chatGroup.upload($files)" multiple="multiple"></span>
+    </div>  
+</div>
