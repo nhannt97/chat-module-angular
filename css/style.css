@@ -104,8 +104,7 @@ chat-module .tab-pane {
 chat-module .chat-module {
     font-size: 12px;
     position: absolute;
-    bottom: 0px;
-    width: 320px;
+    bottom: -19px;
     z-index: 100;
     right: 0px;
 }
@@ -151,7 +150,7 @@ chat-module .online {
     text-overflow: ellipsis;
 }
 chat-module .fa.fa-circle {
-    font-size: 10px;
+    font-size: 5px;
     margin: 5px;
 }
 chat-module .cursor-pointer {

@@ -8,6 +8,7 @@
         "webpack-cli": "^2.1.2"
     },
     "dependencies": {
-        "async": "^2.6.0"
+        "async": "^2.6.0",
+        "mqtt": "^2.18.1"
     }
 }
