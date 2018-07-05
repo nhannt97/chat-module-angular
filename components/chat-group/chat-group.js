@@ -16,7 +16,7 @@ function Controller(apiService, $timeout, $element){
                 idSender: self.user.id,
                 idConversation: self.conver.id,
                 User: self.user,
-                createdAt: new Date((new Date()).getTime())
+                sendAt: new Date((new Date()).getTime())
             };
             apiService.postMessage(message, self.token, function (res) {
             });
@@ -38,7 +38,7 @@ function Controller(apiService, $timeout, $element){
                         idSender: self.user.id,
                         idConversation: self.conver.id,
                         User: self.user,
-                        createdAt: new Date((new Date()).getTime())
+                        sendAt: new Date((new Date()).getTime())
                     }
                     apiService.postMessage(message, self.token, (res) => {
                         _done();
@@ -50,18 +50,17 @@ function Controller(apiService, $timeout, $element){
         });
     }
     this.download = function(path) {
-        let p = path.slice(25);
-        return 'http://13.251.24.65:5001/api/download/'+p+'?token='+self.token;
+        let p = path.slice(27);
+        return apiService.url + '/api/download/'+p+'?token='+self.token;
     }
     this.thumb = function(path) {
-        var lastDots = path.lastIndexOf('.');
-        return path.substring(0, lastDots) + path.substring(lastDots, path.length);
+        let p = path.slice(27);
+        return apiService.url + '/api/thumb/'+p+'?token='+self.token;
     }
     this.fileName = function(path) {
-        return path.substring(59+self.conver.name.length, path.length);
+        return path.substring(61+self.conver.name.length, path.length);
     }
     socket.on('sendMessage', function (data) {
-        console.log('on sendMessage');
         if(self.conver.id == data.idConversation) {
             self.conver.Messages = self.conver.Messages?self.conver.Messages:[];
             $timeout(function() {

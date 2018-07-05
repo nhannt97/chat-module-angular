@@ -1,7 +1,7 @@
 <div style="height:{{chatGroup.listMessageHeight}}px" class="list-message" ngf-drop="chatGroup.upload($files)" class="drop-box"
     ngf-drag-over-class="'dragover'" ngf-multiple="true">
-    <div class="row" ng-repeat="message in chatGroup.conver.Messages">
-        <div ng-if="message.User.username!=chatGroup.user.username" class="row" style="color: gray; text-align: center">---{{message.createdAt}}---</div>
+    <div class="row" ng-repeat="message in chatGroup.conver.Messages track by $index">
+        <div ng-if="message.User.username!=chatGroup.user.username" class="row" style="color: gray; text-align: center">---{{message.sendAt}}---</div>
         <div ng-if="message.User.username!=chatGroup.user.username" style="width: 70%; float: left;margin-bottom: 2px">
             <p ng-if="chatGroup.conver.name.indexOf('Help_Desk')==-1" style="font-weight: bold; margin-top: 3px; margin-bottom: 3px">{{message.User.username}}</p>
             <p ng-if="chatGroup.conver.name.indexOf('Help_Desk')!=-1" style="font-weight: bold; margin-top: 3px; margin-bottom: 3px">Admin</p>

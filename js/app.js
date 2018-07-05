@@ -30,6 +30,12 @@ function Controller(apiService, $scope, $element, $timeout) {
         const HELP_DESK_CLASS = 'success';
         const GROUP_COLOR = '#428bca';
         const GROUP_CLASS = 'primary';
+        let cm = $('chat-module');
+        if ($element.is($(cm[0]))) {
+                $(cm[0]).css('z-index', '100');
+        } else {
+                $(cm[1]).css('z-index', '100');
+        }
         this.$onInit = function () {
                 if (self.groupName == HELP_DESK) {
                         self.color = HELP_DESK_COLOR;
@@ -43,6 +49,44 @@ function Controller(apiService, $scope, $element, $timeout) {
                 }
                 initChat(self.token, self.groupName, self.groupOwner);
         }
+        $scope.$watch(function() { return self.showChatGroup; }, function(newValue, oldValue) {
+                if(!newValue) {
+                        let cm = $('chat-module');
+                        console.log('chat');
+                        if ($element.is($(cm[0]))) {
+                                $(cm[0].children[1]).css('z-index', '-1');
+                        } else {
+                                $(cm[1].children[1]).css('z-index', '-1');
+                        }
+                } else {
+                        let cm = $('chat-module');
+                        console.log('chat');
+                        if ($element.is($(cm[0]))) {
+                                $(cm[0].children[1]).css('z-index', '100');
+                        } else {
+                                $(cm[1].children[1]).css('z-index', '100');
+                        }
+                }
+        })
+        $scope.$watch(function() { return self.showHelpDesk; }, function(newValue, oldValue) {
+                if(!newValue) {
+                        let cm = $('chat-module');
+                        console.log('help dev');
+                        if ($element.is($(cm[0]))) {
+                                $(cm[0].children[1]).css('z-index', '-1');
+                        } else {
+                                $(cm[1].children[1]).css('z-index', '-1');
+                        }
+                }else {
+                        let cm = $('chat-module');
+                        console.log('help dev');
+                        if ($element.is($(cm[0]))) {
+                                $(cm[0].children[1]).css('z-index', '100');
+                        } else {
+                                $(cm[1].children[1]).css('z-index', '100');
+                        }
+                }
+        })
         $scope.$watch(function () { return self.groupName == HELP_DESK ? self.showHelpDesk : self.showChatGroup; }, function (newValue, oldValue) {
 
                 if (newValue) {

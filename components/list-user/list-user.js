@@ -9,14 +9,11 @@ function Controller($timeout){
     }
     
     this.chatPersonal = function(user) {
-        console.log(user, self.user);
     }
     socket.on('send-members-online', function(data) {
-        console.log(data);
         if(self.listUser)
         $timeout(function(){
             for(x of data) {
-                console.log(x);
                 self.listUser.forEach(function(user) {
                     if(user.username==x) user.active ={"color": "blue"};
                 })

@@ -105,7 +105,6 @@ chat-module .chat-module {
     font-size: 12px;
     position: absolute;
     bottom: -19px;
-    z-index: 100;
     right: 0px;
 }
 

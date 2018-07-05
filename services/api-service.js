@@ -1,8 +1,7 @@
 const moduleName = 'apiServiceModule';
 const serviceName = 'apiService';
 const GET_LIST_USER_OF_PROJECT = 'http://login.sflow.me/user/list';
-const wiMessengerUrl = 'http://13.251.24.65:5001';
-// const wiMessengerUrl = 'http://localhost:5005/api';
+const wiMessengerUrl = 'http://54.169.149.206:5001';
 
 const GET_CONVERSATION = wiMessengerUrl + '/api/conversation';
 const POST_MESSAGE = wiMessengerUrl + '/api/message/new';
@@ -42,7 +41,6 @@ angular.module(moduleName, []).service(serviceName, function ($http, Upload) {
         doPost(POST_MESSAGE, token, data, cb);
     }
     this.getListUserOfProject = (data, token, cb) => {
-        console.log(data);
         doPost(GET_LIST_USER_OF_PROJECT, token, data, cb);
     }
     this.upload = (data, token, cb) => {
@@ -67,7 +65,7 @@ angular.module(moduleName, []).service(serviceName, function ($http, Upload) {
                 cb();
             });
     }
-    
+    this.url = wiMessengerUrl;
     return this;
 });
 module.exports.name = moduleName;

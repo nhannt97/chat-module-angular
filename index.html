@@ -1,10 +1,8 @@
 <script>
-    var socket = io('http://13.251.24.65:5001');
-    // var a = mptt.connect('');
-    // var socket = io('http://localhost:5005');
+    var socket = io('http://54.169.149.206:5001');
 </script>
 <div ng-init="cm.draggable()" ng-mousedown="cm.onMouseDown()"
-    class="chat-module" style="right: {{cm.right}};bottom: {{cm.bottom}}; width: {{cm.width}}px" ng-if="cm.initChatGroup || cm.initHelpDesk" ng-show="cm.initChatGroup || cm.initHelpDesk">
+    class="chat-module" style="right: {{cm.right}};bottom: {{cm.bottom}}; width: {{cm.width}}px" ng-if="cm.initChatGroup || cm.initHelpDesk">
     <div id="chat-frame" ng-show="cm.showChatFrame()">
         <div class="panel with-nav-tabs panel-{{cm.class}}">
             <div class="panel-heading title-bar">
