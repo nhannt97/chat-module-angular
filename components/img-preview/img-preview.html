@@ -26,7 +26,7 @@
 <!-- The Modal -->
 <div id="{{imgPreview._modal}}" class="modal">
   <span class="close" ng-click="imgPreview.closeOnClick()">&times;</span>
-  <span class="close" style="right: 70px">
+  <span class="close" style="right: 70px" ng-click="imgPreview.downloadOnClick()">
     <i style="font-size: 31px" class="material-icons large">cloud_download</i>
   </span>
   <img class="modal-content" id="{{imgPreview._modalImg}}">

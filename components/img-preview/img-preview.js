@@ -38,12 +38,19 @@ function Controller() {
         const modal = document.getElementById(self._modal);
 
         modal.style.display = 'none';
-        console.log('img click');
-        console.log({modal});
+        // console.log('img click');
+        // console.log({modal});
     }
 
     self.downloadOnClick = function () {
-        
+        // self.downloadFunc(self.source);
+        // console.log('download');
+
+        const a = document.createElement('a');
+        a.download = true;
+        a.href = self.source;
+
+        a.click();
     }
 
 
