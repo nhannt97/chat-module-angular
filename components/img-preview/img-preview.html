@@ -18,7 +18,7 @@
 
  <img
  class="main-img" 
- src="{{imgPreview.source}}" 
+ src="{{imgPreview.smallImgLink}}" 
  alt="failed to load image" 
  style="width:100%;max-width:300px"
  ng-click="imgPreview.imgOnclick()">
@@ -32,6 +32,11 @@
       <i style="font-size: 31px" class="material-icons large">cloud_download</i>
     </a>
   </span>
-  <img class="modal-content" id="{{imgPreview._modalImg}}">
+  <figure class="zoom">
+      <img 
+       src="{{imgPreview.fullImgLink}}" 
+       class="modal-content" 
+       id="{{imgPreview._modalImg}}">
+  </figure>
 </div>
 

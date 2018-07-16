@@ -20,11 +20,11 @@
                     <!-- <a href="{{chatGroup.download(message.content)}}">
                         <img src="{{chatGroup.thumb(message.content)}}" style="max-width: 70%; max-height: 40%;;border: 1px solid #ddd;border-radius: 4px;">
                     </a> -->
-
+<!-- 
                     <img-preview
                      source="chatGroup.thumb(message.content)"
-                     download-func="chatGroup.download">
-                    </img-preview>
+                     download-link="chatGroup.download">
+                    </img-preview> -->
 
                 </p>
             </div>
@@ -50,8 +50,9 @@
                     </a> -->
 
                     <img-preview
-                     source="chatGroup.thumb(message.content)"
-                     download-link="chatGroup.download(message.content)">
+                     small-img-link="chatGroup.thumb(message.content)"
+                     download-link="chatGroup.download(message.content)"
+                     full-img-link="chatGroup.getImageOrigin(message.content)">
                     </img-preview>
                     
                 </p>

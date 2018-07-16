@@ -22,6 +22,7 @@ function Controller() {
         // console.log({modalImg});
 
         preProcess();
+        enableZoom();
 
     }
 
@@ -31,7 +32,7 @@ function Controller() {
         const modalImg = document.getElementById(self._modalImg);
 
         modal.style.display = "block";
-        modalImg.src = self.source;
+        // modalImg.src = self.source;
     }
 
     self.closeOnClick = function () {
@@ -67,17 +68,31 @@ function Controller() {
         // self._closeBtn = genUniqueId('close-btn');
 
         // img = document.getElementById(self._img);
-        
+
 
         // console.log(modal);
         // console.log(modalImg);
         // closeBtn = document.getElementById(self._closeBtn);
     }
 
-    function genUniqueId(name, src = self.source) {
+    function genUniqueId(name, src = self.smallImgLink) {
         const now = Date.now().toString();
 
         return `__${now}-${src}-${name}__`;
+    }
+
+    function enableZoom() {
+        document.querySelector('figure.zoom').onmousemove = function(e) {
+            const zoomer = e.currentTarget;
+            let offsetX, offsetY, x, y;
+            
+            zoomer.style.backgroundImage = `url('${self.fullImgLink}')`;
+            e.offsetX ? offsetX = e.offsetX : offsetX = e.touches[0].pageX
+            e.offsetY ? offsetY = e.offsetY : offsetX = e.touches[0].pageX
+            x = offsetX / zoomer.offsetWidth * 100
+            y = offsetY / zoomer.offsetHeight * 100
+            zoomer.style.backgroundPosition = x + '% ' + y + '%';
+        }
     }
 }
 
@@ -88,8 +103,9 @@ app.component(componentName, {
     controller: Controller,
     controllerAs: componentName,
     bindings: {
-        source: '<',
-        downloadLink: '<'
+        smallImgLink: '<',
+        downloadLink: '<',
+        fullImgLink: '<'
     }
 });
 
