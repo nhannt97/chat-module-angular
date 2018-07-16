@@ -96,8 +96,15 @@ function Controller(apiService, $scope, $element, $timeout) {
                                 toastr.error('No shared project is opening');
                         }
                         let cm = $element.find('.chat-module');
-                        $(cm).css('left', 'auto');
-                        $(cm).css('top', 'auto');
+                        $(cm).css({
+                                'left': 'auto',
+                                'top': 'auto',
+                                'bottom': "-19px",
+                                "right" : "0"
+                        });
+                        // $(cm).css('left', 'auto');
+
+                        // $(cm).css('bottom', '-19');
                 }
         })
 
@@ -194,6 +201,8 @@ function Controller(apiService, $scope, $element, $timeout) {
                 $element.find(".chat-module").draggable({
                         start: function () {
                                 self.moving = true;
+                                $(this).css("bottom", "auto");
+                                $(this).css("bottom", "auto");
                                 swapChatModule();
                         },
                         drag: function () {
@@ -201,7 +210,8 @@ function Controller(apiService, $scope, $element, $timeout) {
                         },
                         stop: function () {
                                 self.moving = false;
-                        }
+                        },
+                        containment: 'window'
                 });
         }
         this.onMouseDown = function ($event) {

@@ -49,16 +49,17 @@ function Controller(apiService, $timeout, $element){
 
         });
     }
+    let lengthUrl = apiService.url.length;
     this.download = function(path) {
-        let p = path.slice(27);
+        let p = path.slice(lengthUrl+1);
         return apiService.url + '/api/download/'+p+'?token='+self.token;
     }
     this.thumb = function(path) {
-        let p = path.slice(27);
+        let p = path.slice(lengthUrl+1);
         return apiService.url + '/api/thumb/'+p+'?token='+self.token;
     }
     this.fileName = function(path) {
-        return path.substring(61+self.conver.name.length, path.length);
+        return path.substring(lengthUrl+35+self.conver.name.length, path.length);
     }
     socket.on('sendMessage', function (data) {
         if(self.conver.id == data.idConversation) {

@@ -104,7 +104,8 @@ chat-module .tab-pane {
 chat-module .chat-module {
     font-size: 12px;
     position: absolute;
-    bottom: -19px;
+    /*bottom: -19px;*/
+    top: 0px;
     right: 0px;
 }
 

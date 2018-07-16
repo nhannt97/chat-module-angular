@@ -1,7 +1,7 @@
 const moduleName = 'apiServiceModule';
 const serviceName = 'apiService';
 const GET_LIST_USER_OF_PROJECT = 'http://login.sflow.me/user/list';
-const wiMessengerUrl = 'http://54.169.149.206:5001';
+const wiMessengerUrl = 'http://chat.i2g.cloud';
 
 const GET_CONVERSATION = wiMessengerUrl + '/api/conversation';
 const POST_MESSAGE = wiMessengerUrl + '/api/message/new';
