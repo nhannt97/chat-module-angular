@@ -42,16 +42,22 @@ function Controller() {
         // console.log({modal});
     }
 
-    self.downloadOnClick = function () {
-        // self.downloadFunc(self.source);
-        // console.log('download');
+    // self.downloadOnClick = function () {
+    //     // self.downloadFunc(self.source);
+    //     // console.log('download');
 
-        const a = document.createElement('a');
-        a.download = true;
-        a.href = self.source;
+    //     // const a = document.createElement('a');
+    //     // a.download = true;
+    //     // a.href = self.source;
 
-        a.click();
-    }
+    //     // a.onclick = function(e) {
+    //     //     e.preventDefault();
+    //     // }
+
+    //     // a.click();
+
+    //     console.log(self.downloadFunc());
+    // }
 
 
     function preProcess() {
@@ -83,7 +89,7 @@ app.component(componentName, {
     controllerAs: componentName,
     bindings: {
         source: '<',
-        downloadFunc: '<'
+        downloadLink: '<'
     }
 });
 
