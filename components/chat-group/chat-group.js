@@ -50,6 +50,10 @@ function Controller(apiService, $timeout, $element){
         });
     }
     let lengthUrl = apiService.url.length;
+    this.getImageOrigin = function(path) {
+        let p = path.slice(lengthUrl+1);
+        return apiService.url + '/api/imageOrigin/'+p+'?token='+self.token;
+    }
     this.download = function(path) {
         let p = path.slice(lengthUrl+1);
         return apiService.url + '/api/download/'+p+'?token='+self.token;
