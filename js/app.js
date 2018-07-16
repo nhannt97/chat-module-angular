@@ -3,9 +3,10 @@ let chatService = require('../services/api-service.js');
 let chatGroup = require('../components/chat-group/chat-group.js');
 let helpDesk = require('../components/help-desk/help-desk.js');
 let listUser = require('../components/list-user/list-user.js');
+let imgPreview = require('../components/img-preview/img-preview');
 let moduleName = componentName = 'chatModule';
 
-angular.module(moduleName, [chatService.name, chatGroup.name, helpDesk.name, listUser.name, 'ngFileUpload'])
+angular.module(moduleName, [chatService.name, chatGroup.name, helpDesk.name, listUser.name, 'ngFileUpload', imgPreview.name])
         .component(componentName, {
                 template: require('../index.html'),
                 controller: Controller,
