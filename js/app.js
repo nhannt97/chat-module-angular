@@ -96,6 +96,7 @@ function Controller(apiService, $scope, $element, $timeout) {
                                 toastr.error('No shared project is opening');
                         }
                         let cm = $element.find('.chat-module');
+                        
                         $(cm).css({
                                 'left': 'auto',
                                 'top': 'auto',
