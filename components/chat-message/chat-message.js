@@ -17,7 +17,7 @@ function Controller() {
 
     function preProcess() {
         self.text = replaceText(self.text);
-        console.log({'self.text': self.text})
+        // console.log({'self.text': self.text})
     }
 
 
