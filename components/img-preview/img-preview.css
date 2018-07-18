@@ -4,7 +4,7 @@
     transition: 0.3s;
 } */
 
-image-preview .main-img{
+.img-preview .main-img{
     border-radius: 5px;
     cursor: pointer;
     transition: 0.3s;
@@ -14,10 +14,10 @@ image-preview .main-img{
     border-radius: 4px;
 }
 
-image-preview .main-img:hover {opacity: 0.7;}
+.img-preview .main-img:hover {opacity: 0.7;}
 
 /* The Modal (background) */
-image-preview .modal {
+.img-preview .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
@@ -32,7 +32,7 @@ image-preview .modal {
 }
 
 /* Modal Content (image) */
-image-preview .modal-content {
+.img-preview .modal-content {
     margin: auto;
     display: block;
     width: 90%;
@@ -52,7 +52,7 @@ image-preview .modal-content {
 } */
 
 /* Add Animation */
-image-preview .modal-content /*, #caption */ {    
+.img-preview .modal-content /*, #caption */ {    
     -webkit-animation-name: zoom;
     -webkit-animation-duration: 0.6s;
     animation-name: zoom;
@@ -70,7 +70,7 @@ image-preview .modal-content /*, #caption */ {
 } */
 
 /* The Close Button */
-image-preview .close {
+.img-preview .close {
     position: absolute;
     top: 15px;
     right: 35px;
@@ -83,8 +83,8 @@ image-preview .close {
 }
 
 
-image-preview .close:hover,
-image-preview .close:focus {
+.img-preview .close:hover,
+.img-preview .close:focus {
     color: #bbb;
     text-decoration: none;
     cursor: pointer;
@@ -111,14 +111,14 @@ image-preview .close:focus {
 
 /* 100% Image Width on Smaller Screens */
 @media only screen and (max-width: 700px){
-    image-preview .modal-content {
+    .img-preview .modal-content {
         width: 100%;
     }
 }
 
 /* zoom */
 
-image-preview figure.zoom {
+.img-preview figure.zoom {
     margin: auto;
     background-position: 50% 50%;
     background-repeat: no-repeat;
@@ -130,11 +130,11 @@ image-preview figure.zoom {
     max-width: 900px;
 }
 
-image-preview figure.zoom img:hover {
+.img-preview figure.zoom img:hover {
     opacity: 0;
 }
 
-image-preview figure.zoom img {
+.img-preview figure.zoom img {
     transition: opacity 0.5s;
     display: block;
     width: 100%;
