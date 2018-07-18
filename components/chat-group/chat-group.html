@@ -6,8 +6,13 @@
             <p ng-if="chatGroup.conver.name.indexOf('Help_Desk')==-1" style="font-weight: bold; margin-top: 3px; margin-bottom: 3px">{{message.User.username}}</p>
             <p ng-if="chatGroup.conver.name.indexOf('Help_Desk')!=-1" style="font-weight: bold; margin-top: 3px; margin-bottom: 3px">Admin</p>
             <div ng-if="message.type!='image'" style="background: #e6e6e6; border-radius: 10px; display: inline-block; padding: 6px 8px ;max-width: 100%">
-                <p class="message" ng-bind-html="message.content" style=" display: inline;" ng-if="message.type=='text'">
+                <!-- <p class="message" ng-bind-html="message.content" style=" display: inline;" ng-if="message.type=='text'">
+                </p> -->
+
+                <p class="message" style=" display: inline;" ng-if="message.type=='text'">
+                    <chat-message text="message.content"></chat-message>
                 </p>
+
                 <p class="message" style=" display: inline;" ng-if="message.type=='file'">
                     <a href="{{chatGroup.download(message.content)}}">
                         <i class="glyphicon glyphicon-circle-arrow-down"></i>
@@ -26,13 +31,24 @@
                      download-link="chatGroup.download">
                     </img-preview> -->
 
+                    <img-preview
+                     small-img-link="chatGroup.thumb(message.content)"
+                     download-link="chatGroup.download(message.content)"
+                     full-img-link="chatGroup.getImageOrigin(message.content)">
+                    </img-preview>
+
                 </p>
             </div>
         </div>
         <div ng-if="message.User.username==chatGroup.user.username" style="width: 70%; float: right;margin-bottom: 2px">
             <div ng-if="message.type!='image'" style="background: {{chatGroup.color}}; border-radius: 10px; float: right; display: inline-block;padding: 6px 8px;max-width: 100%">
-                <p class="message" ng-bind-html="message.content" style="color: #fff;display: inline; " ng-if="message.type=='text'">
+                <!-- <p class="message" ng-bind-html="message.content" style="color: #fff;display: inline; " ng-if="message.type=='text'">
+                </p> -->
+
+                <p class="message" style=" display: inline;" ng-if="message.type=='text'">
+                    <chat-message text="message.content"></chat-message>
                 </p>
+
                 <p class="message" style=" display: inline;" ng-if="message.type=='file'">
                     <a href="{{chatGroup.download(message.content)}}" style="color: #fff">
                         <i class="glyphicon glyphicon-circle-arrow-down"></i>
