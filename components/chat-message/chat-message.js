@@ -135,6 +135,8 @@ function Controller() {
         const listIconsVerbose = str.match(regex);
         //console.log({listIconsVerbose});
         //remove duplicate
+        if(!listIconsVerbose || !listIconsVerbose.length) return str;
+        
         const listIcons = listIconsVerbose.filter((val, i) => listIconsVerbose.indexOf(val) === i);
 
         //console.log({listIcons});
