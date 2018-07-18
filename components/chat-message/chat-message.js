@@ -3,6 +3,7 @@ const moduleName = 'chat-message';
 const iconTextRules = require('./rules');
 require('../chat-message/chat-message.css');
 
+Controller.$inject = [];
 function Controller() {
     let self = this;
 
@@ -16,7 +17,7 @@ function Controller() {
 
     function preProcess() {
         self.text = replaceText(self.text);
-        //console.log({'self.text': self.text})
+        console.log({'self.text': self.text})
     }
 
 
@@ -110,6 +111,26 @@ function Controller() {
         return null;
     }
 
+    //without html
+    // function replaceText(str) {
+    //     const listIconsVerbose = str.match(regex);
+    //     //console.log({listIconsVerbose});
+    //     //remove duplicate
+    //     const listIcons = listIconsVerbose.filter((val, i) => listIconsVerbose.indexOf(val) === i);
+
+    //     //console.log({listIcons});
+
+    //     let result = str;
+    //     for (let icon of listIcons) {
+    //         const _regex = new RegExp(preRegex(icon));
+    //         const replaceIcon = findIcon(icon);
+    //         //console.log({replaceIcon});
+    //         if(replaceIcon) result = result.replace(_regex, replaceIcon);
+    //     }
+
+    //     return result;
+    // }
+
     function replaceText(str) {
         const listIconsVerbose = str.match(regex);
         //console.log({listIconsVerbose});
@@ -122,11 +143,16 @@ function Controller() {
         for (let icon of listIcons) {
             const _regex = new RegExp(preRegex(icon));
             const replaceIcon = findIcon(icon);
+            const iconHtml = toHtmlWithIcon(replaceIcon);
             //console.log({replaceIcon});
-            if(replaceIcon) result = result.replace(_regex, replaceIcon);
+            if(replaceIcon) result = result.replace(_regex, iconHtml);
         }
 
         return result;
+    }
+
+    function toHtmlWithIcon(className) {
+        return `<div class="${className}"></div>`
     }
 }
 
