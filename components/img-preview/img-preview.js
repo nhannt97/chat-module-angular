@@ -56,14 +56,14 @@ function Controller() {
         } else {
             self.zoomer.disableZoom();
         }
-    }
+    }    
 
-    self.zoomIn = function () {
-        self.zoomer.zoomIn();
-    }
-    self.zoomOut = function () {
-        self.zoomer.zoomOut()
-    }
+    // self.zoomIn = function () {
+    //     self.zoomer.zoomIn();
+    // }
+    // self.zoomOut = function () {
+    //     self.zoomer.zoomOut()
+    // }
 
     // self.creatZoomer = function() {
     //     if(!self.zoomer) self.zoomer = creatZoomer();
@@ -199,6 +199,7 @@ function Controller() {
 
         function disableZoomHover() {
             background.onmousemove = null;
+            background.onmouseout = null;
         }
 
         function isZoomHoverEnable() {

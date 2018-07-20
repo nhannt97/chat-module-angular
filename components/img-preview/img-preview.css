@@ -29,6 +29,7 @@
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+    z-index: 1000;
 }
 
 /* Modal Content (image) */
@@ -129,6 +130,11 @@
     cursor: zoom-in;
     width:90%;
     max-width: 900px;
+
+    /* slide effect */
+    /* background-repeat: repeat; */
+    /* animation: slide linear 60ms; */
+
 }
 
 /* .img-preview figure.zoom img:hover {
@@ -139,4 +145,13 @@
     transition: opacity 0.5s;
     display: block;
     width: 100%;
+}
+
+@keyframes slide{
+    0%{
+        transform: translate3d(0, 0, 0);
+      }
+      100%{
+        transform: translate3d(-1692px, 0, 0);
+      }
 }
