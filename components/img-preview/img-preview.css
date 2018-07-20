@@ -37,6 +37,7 @@
     display: block;
     width: 90%;
     max-width: 900px;
+    border: 0px;
 }
 
 /* Caption of Modal Image */
@@ -126,13 +127,13 @@
     /* width: 500px; */
     overflow: hidden;
     cursor: zoom-in;
-    width: 90%;
+    width:90%;
     max-width: 900px;
 }
 
-.img-preview figure.zoom img:hover {
+/* .img-preview figure.zoom img:hover {
     opacity: 0;
-}
+} */
 
 .img-preview figure.zoom img {
     transition: opacity 0.5s;
