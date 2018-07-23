@@ -11,7 +11,7 @@ function Controller(apiService, $timeout, $element){
         if (e.which == 13 && !e.shiftKey) {
             let content = textMessage.val().split('\n').join('<br/>');
             let message = {
-                content: content,
+                content: preventXSS(content),
                 type: 'text',
                 idSender: self.user.id,
                 idConversation: self.conver.id,
@@ -78,6 +78,27 @@ function Controller(apiService, $timeout, $element){
             
         }
     });
+    function preventXSS(text) {
+        const rule = {
+            '<': {
+                regex: /\</g,
+                replaceStr: '%3C'
+            }, 
+            '>' : {
+                regex: /\>/g,
+                replaceStr: '%3E'
+            }
+        };
+    
+        text = text.replace(rule['>'].regex, rule['>'].replaceStr);
+        console.log({text});
+        text = text.replace(rule['<'].regex, rule['<'].replaceStr);
+        console.log({text});
+        
+    
+        return text;
+    
+    }
 }
 
 let app = angular.module(moduleName, []);

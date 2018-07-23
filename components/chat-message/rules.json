@@ -125,7 +125,7 @@
     },
     "suspicious": {
         "icon": "suspicious-icon",
-        "text-replace": [":/"]
+        "text-replace": []
     },
     "tongue-out-1": {
         "icon": "tongue-out-1-icon",

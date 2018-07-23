@@ -22,7 +22,7 @@
    class="main-img" 
    src="{{imgPreview.smallImgLink}}" 
    alt="failed to load image" 
-   style="width:100%;max-width:300px"
+   style="width:100%;max-width:300px;z-index: 1002;"
    ng-click="imgPreview.imgOnclick()">
 
   <!-- The Modal -->
@@ -34,7 +34,14 @@
         <i style="font-size: 31px" class="material-icons large">cloud_download</i>
       </a>
     </span>
-    <figure class="zoom">
+    
+    <span class="close" style="right: 109px" ng-click="imgPreview.zoomByMouseToggle()">
+      <!-- <i style="font-size: 31px" class="material-icons large">cloud_download</i> -->
+      <a style="cursor: pointer;">
+        <i style="font-size: 31px" class="material-icons large">search</i>
+      </a>
+    </span>
+    <figure class="zoom" id="{{imgPreview._zoomBackground}}">
         <img 
         src="{{imgPreview.fullImgLink}}" 
         class="modal-content" 
@@ -43,4 +50,4 @@
   </div>
 </div>
 
-<chat-message text="':)) malie dsocj:-)'"></chat-message>
+<!-- <chat-message text="':)) malie dsocj:-)'"></chat-message> -->
