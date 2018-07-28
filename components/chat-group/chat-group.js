@@ -93,10 +93,7 @@ function Controller(apiService, $timeout, $element){
         };
     
         text = text.replace(rule['>'].regex, rule['>'].replaceStr);
-        console.log({text});
         text = text.replace(rule['<'].regex, rule['<'].replaceStr);
-        console.log({text});
-        
     
         return text;
     

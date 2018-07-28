@@ -9,7 +9,6 @@ angular.module(moduleName, []).service(serviceName, function ($http, Upload) {
     const SEEN_MESSAGE = BASE_URL + '/api/seenMessage';
     const UPLOAD =  BASE_URL + '/api/upload';
     const GET_USER =  BASE_URL + '/getUser';
-    console.log(BASE_URL);
     let doPost = function(URL, token, data, cb) {
         $http({
             method: 'POST',

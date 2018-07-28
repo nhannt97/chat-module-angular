@@ -48,13 +48,12 @@ function Controller(apiService, $scope, $element, $timeout) {
             self.class = GROUP_CLASS;
             self.color = GROUP_COLOR;
         }
-        initChat(self.token, self.groupName, self.groupOwner);
+        if(self.token) initChat(self.token, self.groupName, self.groupOwner);
     }
 
     $scope.$watch(function () { return self.groupName == HELP_DESK ? self.showHelpDesk : self.showChatGroup;  }, function (newValue, oldValue) {
         if (!newValue) {
             let cm = $('chat-module');
-            console.log('chat');
             if ($element.is($(cm[0]))) {
                 $(cm[0].children[1]).css('z-index', '-1');
             } else {
@@ -62,7 +61,6 @@ function Controller(apiService, $scope, $element, $timeout) {
             }
         } else {
             let cmm = $('chat-module');
-            console.log('chat');
             if ($element.is($(cmm[0]))) {
                 $(cmm[0].children[1]).css('z-index', '100');
             } else {
@@ -86,7 +84,7 @@ function Controller(apiService, $scope, $element, $timeout) {
             });
         }
     })
-    
+
     $scope.$watch(function () { return self.groupName }, function handleChange(newValue, oldValue) {
         if(self.groupName!=HELP_DESK)
         if (oldValue != newValue) {
@@ -110,8 +108,9 @@ function Controller(apiService, $scope, $element, $timeout) {
                 self.user = {};
                 self.user.username = window.localStorage.getItem('username');
                 socket.emit('off-project', { idConversation: self.conver.id, username: self.user.username });
+            } else {
+                initChat(self.token, self.groupName, self.groupOwner);
             }
-            if(self.groupName==HELP_DESK) initChat(self.token, self.groupName, self.groupOwner);
         }
     });
 
@@ -133,7 +132,6 @@ function Controller(apiService, $scope, $element, $timeout) {
                 self.conver = res.conver;
                 self.user = res.user;
                 if(res.numNewMess) {
-                    console.log('abc', self.groupName);
                     if(self.groupName==HELP_DESK) {
                         __toastr.success('Help Desk has a new message');
                     }
@@ -149,36 +147,32 @@ function Controller(apiService, $scope, $element, $timeout) {
     }
 
     function initChat(token, projectName, projectOwner) {
-        if (!token)
-            __toastr.error('Authentization fail');
+        if (projectName == HELP_DESK) {
+            getChatGroup(projectName + '-' + self.username);
+        }
         else {
-            if (projectName == HELP_DESK) {
-                getChatGroup(projectName + '-' + self.username);
-            }
-            else {
-                if (projectName) {
-                    if (self.conver.id) socket.emit('off-project', { idConversation: self.conver.id, username: self.user.username });
-                    getListUser(projectName, projectOwner, function (res) {
-                        if (res) {
-                            self.listUser = res;
-                            if (self.listUser.length >= 2) {
-                                getChatGroup(projectName);
-                            }
-                            else {
-                                self.showChatGroup = false;
-                                self.showHelpDesk = false;
-                            }
-                        } else {
-                            self.listUser = [];
+            if (projectName) {
+                if (self.conver.id) socket.emit('off-project', { idConversation: self.conver.id, username: self.user.username });
+                getListUser(projectName, projectOwner, function (res) {
+                    if (res) {
+                        self.listUser = res;
+                        if (self.listUser.length >= 2) {
+                            getChatGroup(projectName);
+                        }
+                        else {
                             self.showChatGroup = false;
                             self.showHelpDesk = false;
                         }
-                    });
-                } else {
-                    self.projectName = '';
-                    if (self.conver.id)
-                        socket.emit('off-project', { idConversation: self.conver.id, username: self.user.username });
-                }
+                    } else {
+                        self.listUser = [];
+                        self.showChatGroup = false;
+                        self.showHelpDesk = false;
+                    }
+                });
+            } else {
+                self.projectName = '';
+                if (self.conver.id)
+                    socket.emit('off-project', { idConversation: self.conver.id, username: self.user.username });
             }
         }
     }
