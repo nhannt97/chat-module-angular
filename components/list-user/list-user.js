@@ -3,7 +3,7 @@ const moduleName = 'list-user';
 
 function Controller($timeout){
     let self = this;
-    this.listMemberHeight = 300;
+    this.listMemberHeight = 330;
     this.active = function(user) {
         return user.active;
     }

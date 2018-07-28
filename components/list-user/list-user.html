@@ -1,4 +1,4 @@
-<ul style="overflow-y: overlay; height:{{chatGroup.listMemberHeight}}px; padding: 0px 8px;">
+<ul style="overflow-y: overlay; height:{{listUser.listMemberHeight}}px; padding: 0px 8px;">
     <li class="online" ng-repeat="user in listUser.listUser">
         <i class="fa fa-circle" style="font-size: 10px" ng-style="listUser.active(user)"></i>
         <span class="user" style="cursor: pointer;" ng-click="listUser.chatPersonal(user)">{{user.username}}</span>

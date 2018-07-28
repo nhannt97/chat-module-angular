@@ -1,15 +1,15 @@
 const moduleName = 'apiServiceModule';
 const serviceName = 'apiService';
 const GET_LIST_USER_OF_PROJECT = 'http://login.sflow.me/user/list';
-// const wiMessengerUrl = 'http://54.169.149.206:5001';
-const wiMessengerUrl = 'http://chat.sflow.me';
 
-const GET_CONVERSATION = wiMessengerUrl + '/api/conversation';
-const POST_MESSAGE = wiMessengerUrl + '/api/message/new';
-const UPLOAD = wiMessengerUrl + '/api/upload';
-const GET_USER = wiMessengerUrl + '/getUser';
+
 angular.module(moduleName, []).service(serviceName, function ($http, Upload) {
-    
+    const GET_CONVERSATION =  BASE_URL + '/api/conversation';
+    const POST_MESSAGE =  BASE_URL + '/api/message/new';
+    const SEEN_MESSAGE = BASE_URL + '/api/seenMessage';
+    const UPLOAD =  BASE_URL + '/api/upload';
+    const GET_USER =  BASE_URL + '/getUser';
+    console.log(BASE_URL);
     let doPost = function(URL, token, data, cb) {
         $http({
             method: 'POST',
@@ -27,7 +27,7 @@ angular.module(moduleName, []).service(serviceName, function ($http, Upload) {
                 }
         }, function errorCallback(response) {
             console.error(response);
-            if(toastr) toastr.error(response);
+            if(__toastr) __toastr.error(response);
             cb();
         });
     }
@@ -40,6 +40,9 @@ angular.module(moduleName, []).service(serviceName, function ($http, Upload) {
     }
     this.postMessage = (data, token, cb) => {
         doPost(POST_MESSAGE, token, data, cb);
+    }
+    this.seenMessage = (data, token, cb) =>{
+        doPost(SEEN_MESSAGE, token, data, cb);
     }
     this.getListUserOfProject = (data, token, cb) => {
         doPost(GET_LIST_USER_OF_PROJECT, token, data, cb);
@@ -66,7 +69,7 @@ angular.module(moduleName, []).service(serviceName, function ($http, Upload) {
                 cb();
             });
     }
-    this.url = wiMessengerUrl;
+    this.url = BASE_URL;
     return this;
 });
 module.exports.name = moduleName;

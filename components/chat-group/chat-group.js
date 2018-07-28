@@ -9,17 +9,19 @@ function Controller(apiService, $timeout, $element){
     let listMessage = $element.find('.list-message');
     textMessage.keypress(function (e) {
         if (e.which == 13 && !e.shiftKey) {
-            let content = textMessage.val().split('\n').join('<br/>');
-            let message = {
-                content: preventXSS(content),
-                type: 'text',
-                idSender: self.user.id,
-                idConversation: self.conver.id,
-                User: self.user,
-                sendAt: new Date((new Date()).getTime())
-            };
-            apiService.postMessage(message, self.token, function (res) {
-            });
+            let content = textMessage.val();
+            if(content) {
+                let message = {
+                    content: preventXSS(content),
+                    type: 'text',
+                    idSender: self.user.id,
+                    idConversation: self.conver.id,
+                    User: self.user,
+                    sendAt: new Date((new Date()).getTime())
+                };
+                apiService.postMessage(message, self.token, function (res) {
+                });
+            }
             e.preventDefault();
             textMessage.val('');
         }
@@ -82,11 +84,11 @@ function Controller(apiService, $timeout, $element){
         const rule = {
             '<': {
                 regex: /\</g,
-                replaceStr: '%3C'
+                replaceStr: '&lt'
             }, 
             '>' : {
                 regex: /\>/g,
-                replaceStr: '%3E'
+                replaceStr: '&gt'
             }
         };
     

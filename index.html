@@ -1,19 +1,21 @@
 <script>
-    var socket = io('http://chat.sflow.me');
+    // var BASE_URL = 'http://127.0.0.1:5001';
+    var BASE_URL = 'http://chat.sflow.me';
+    var socket = io(BASE_URL);
 </script>
 <div ng-init="cm.draggable()" ng-mousedown="cm.onMouseDown()"
     class="chat-module" style="right: {{cm.right}};bottom: {{cm.bottom}}; width: {{cm.width}}px" ng-if="cm.initChatGroup || cm.initHelpDesk">
     <div id="chat-frame" ng-show="cm.showChatFrame()">
         <div class="panel with-nav-tabs panel-{{cm.class}}">
             <div class="panel-heading title-bar">
-                <ul class="nav nav-tabs">
-                    <li class="active tab-chat" id="pill-active" style="max-width: 100px">
-                        <a href="#chat-{{cm.groupName}}" data-toggle="tab" style="white-space: nowrap;overflow-x: hidden;text-overflow: ellipsis;">
+                <ul class="nav nav-tabs" ng-init="cm.chat=true">
+                    <li ng-click="cm.chat=true" class="active chat" id="pill-active" style="max-width: 100px">
+                        <a href="#{{cm.idChat()}}" data-toggle="tab" style="white-space: nowrap;overflow-x: hidden;text-overflow: ellipsis;">
                             {{cm.groupName}}
                         </a>
                     </li>
-                    <li id="pill-active" ng-if="cm.groupName!='Help_Desk'" class="members">
-                        <a href="#members-{{cm.groupName}}" data-toggle="tab">Members({{cm.groupName}})</a>
+                    <li ng-click="cm.chat=false;" id="pill-active" ng-if="cm.groupName!='Help_Desk'" class="members">
+                        <a href="#members" data-toggle="tab">Members({{cm.groupName}})</a>
                     </li>
                     <li style="float: right" class="cursor-pointer" ng-click="cm.hideChatFrame()">
                         <i class="fa fa-minus config"></i>
@@ -22,10 +24,10 @@
             </div>
             <div class="panel-body">
                 <div class="tab-content">
-                    <div class="tab-pane fade in active" id="chat-{{cm.groupName}}">
+                    <div class="tab-pane fade in active" id="{{cm.idChat()}}">
                         <chat-group conver="cm.conver" user="cm.user" token="cm.token" color="cm.color"></chat-group>
                     </div>
-                    <div class="tab-pane fade" id="members-{{cm.groupName}}" ng-if="cm.groupName!='Help_Desk'">
+                    <div class="tab-pane fade" id="members" ng-if="cm.groupName!='Help_Desk'">
                         <list-user list-user="cm.listUser" user="cm.user" id-conversation="cm.conver.id" token="cm.token"></list-user>
                     </div>
                 </div>

@@ -48,7 +48,6 @@ function Controller() {
         //console.log({listIcon});
         const regexStr = listIcon
             .reduce((pre, cur, i) => {
-                // //console.log({pre, cur, i})
                 const cur_regex_str = preRegex(cur);
 
                 if (i === 0) return pre + cur_regex_str;
@@ -60,76 +59,19 @@ function Controller() {
                 return str;
 
             }, '(')
-
-        // const regexStr = listIcon
-        //     .reduce((pre, cur, i) => {
-        //         // //console.log({pre, cur, i})
-        //         const cur_regex_str = `(${preRegex(cur)})`;
-
-        //         if (i === 0) return pre + cur_regex_str;
-
-        //         let str = `${pre}|${cur_regex_str}`;
-
-        //         if (i === listIcon.length - 1) str += ')';
-
-        //         return str;
-
-        //     }, '(')
-
-        //console.log({regexStr});
         return new RegExp(regexStr, 'g');
 
     }
 
-    // function findStr(icon) {
-    //     const obj = rules.find(o => o[1].icon === icon);
-
-    //     if (obj) return obj["text-replace"];
-
-    //     return null;
-    // }
-
     function findIcon(text) {
-        //console.log('===findIcon==');
-        
         const obj = rules
             .filter(o => {
                 const listIcons = o[1]["text-replace"];
-                // //console.log({'o[1][text-replace]': o[1]["text-replace"]});
-
                 return !!listIcons.filter(i => i === text).length;
             })[0]
-
-        // //console.log({text});
-        // //console.log({rules});
-        //console.log('obj');
-        //console.log();
-
-        //console.log('XXXX findIcon XXXX');
-
         if (obj) return obj[1].icon;
         return null;
     }
-
-    //without html
-    // function replaceText(str) {
-    //     const listIconsVerbose = str.match(regex);
-    //     //console.log({listIconsVerbose});
-    //     //remove duplicate
-    //     const listIcons = listIconsVerbose.filter((val, i) => listIconsVerbose.indexOf(val) === i);
-
-    //     //console.log({listIcons});
-
-    //     let result = str;
-    //     for (let icon of listIcons) {
-    //         const _regex = new RegExp(preRegex(icon));
-    //         const replaceIcon = findIcon(icon);
-    //         //console.log({replaceIcon});
-    //         if(replaceIcon) result = result.replace(_regex, replaceIcon);
-    //     }
-
-    //     return result;
-    // }
 
     function replaceText(str) {
         const listIconsVerbose = str.match(regex);
@@ -165,7 +107,8 @@ app.component(componentName, {
     controller: Controller,
     controllerAs: componentName,
     bindings: {
-        text: '<'
+        text: '<',
+        color: '<'
     }
 });
 
