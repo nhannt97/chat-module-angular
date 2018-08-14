@@ -1,6 +1,6 @@
 const moduleName = 'apiServiceModule';
 const serviceName = 'apiService';
-const GET_LIST_USER_OF_PROJECT = 'http://login.sflow.me/user/list';
+const GET_LIST_USER_OF_PROJECT = 'http://admin.dev.i2g.cloud/user/list';
 
 
 angular.module(moduleName, []).service(serviceName, function ($http, Upload) {
@@ -30,7 +30,7 @@ angular.module(moduleName, []).service(serviceName, function ($http, Upload) {
             cb();
         });
     }
-    
+
     this.getConver = (data, token, cb) => {
         doPost(GET_CONVERSATION, token, data, cb);
     }

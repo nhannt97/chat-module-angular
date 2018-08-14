@@ -1,7 +1,7 @@
 <script>
-    // var BASE_URL = 'http://127.0.0.1:5001';
-    var BASE_URL = 'http://chat.sflow.me';
+    var BASE_URL = 'http://api.chat.dev.i2g.cloud';
     var socket = io(BASE_URL);
+
 </script>
 <div ng-init="cm.draggable()" ng-mousedown="cm.onMouseDown()"
     class="chat-module" style="right: {{cm.right}};bottom: {{cm.bottom}}; width: {{cm.width}}px" ng-if="cm.initChatGroup || cm.initHelpDesk">
@@ -14,8 +14,8 @@
                             {{cm.groupName}}
                         </a>
                     </li>
-                    <li ng-click="cm.chat=false;" id="pill-active" ng-if="cm.groupName!='Help_Desk'" class="members">
-                        <a href="#members" data-toggle="tab">Members({{cm.groupName}})</a>
+                    <li ng-click="cm.chat=false;" id="pill-active" ng-if="cm.groupName!='Help_Desk'" class="members" style="max-width: 100px">
+                        <a href="#members" data-toggle="tab" style="white-space: nowrap;overflow-x: hidden;text-overflow: ellipsis;" >Members({{cm.groupName}})</a>
                     </li>
                     <li style="float: right" class="cursor-pointer" ng-click="cm.hideChatFrame()">
                         <i class="fa fa-minus config"></i>

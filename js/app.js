@@ -4,9 +4,10 @@ let chatGroup = require('../components/chat-group/chat-group.js');
 let listUser = require('../components/list-user/list-user.js');
 let imgPreview = require('../components/img-preview/img-preview');
 let chatMessage = require('../components/chat-message/chat-message');
+let avatar = require('../components/avatar/avatar');
 let moduleName = componentName = 'chatModule';
 
-angular.module(moduleName, [chatService.name, chatGroup.name, listUser.name, 'ngFileUpload', imgPreview.name, chatMessage.name])
+angular.module(moduleName, [chatService.name, chatGroup.name, avatar.name, listUser.name, 'ngFileUpload', imgPreview.name, chatMessage.name])
     .component(componentName, {
         template: require('../index.html'),
         controller: Controller,
@@ -26,6 +27,7 @@ function Controller(apiService, $scope, $element, $timeout) {
     let self = this;
     this.conver = {};
     this.token = '';
+    this.user = {};
     const HELP_DESK = 'Help_Desk';
     const HELP_DESK_COLOR = '#3c763d';
     const HELP_DESK_CLASS = 'success';
@@ -60,6 +62,14 @@ function Controller(apiService, $scope, $element, $timeout) {
                 $(cm[1].children[1]).css('z-index', '-1');
             }
         } else {
+            // $($element).click();
+            let listMessage = $element.find('.list-message');
+            let textMessage = $element.find('.text-message');
+            $timeout(function() {
+                listMessage.scrollTop(listMessage[0].scrollHeight);
+                $(textMessage).focus();
+
+            });
             let cmm = $('chat-module');
             if ($element.is($(cmm[0]))) {
                 $(cmm[0].children[1]).css('z-index', '100');
@@ -95,8 +105,9 @@ function Controller(apiService, $scope, $element, $timeout) {
                 self.user = {};
                 self.user.username = window.localStorage.getItem('username');
                 socket.emit('off-project', { idConversation: self.conver.id, username: self.user.username });
+            } else {
+                initChat(self.token, self.groupName, self.groupOwner);
             }
-            initChat(self.token, self.groupName, self.groupOwner);
         }
     });
     $scope.$watch(function () { return self.token }, function handleChange(newValue, oldValue) {
@@ -125,12 +136,14 @@ function Controller(apiService, $scope, $element, $timeout) {
     function getChatGroup(projectName, users) {
         self.initChatGroup = true;
         apiService.getConver({
-            name: projectName,
-            users: users
+            name: projectName
         }, self.token, (res) => {
             if (res) {
                 self.conver = res.conver;
                 self.user = res.user;
+                // $('.list-message').ready(function() {
+                //     $('.list-message').scrollTop($('.list-message').scrollHeight);
+                // })
                 if(res.numNewMess) {
                     if(self.groupName==HELP_DESK) {
                         __toastr.success('Help Desk has a new message');
@@ -147,32 +160,34 @@ function Controller(apiService, $scope, $element, $timeout) {
     }
 
     function initChat(token, projectName, projectOwner) {
-        if (projectName == HELP_DESK) {
-            getChatGroup(projectName + '-' + self.username);
-        }
-        else {
-            if (projectName) {
-                if (self.conver.id) socket.emit('off-project', { idConversation: self.conver.id, username: self.user.username });
-                getListUser(projectName, projectOwner, function (res) {
-                    if (res) {
-                        self.listUser = res;
-                        if (self.listUser.length >= 2) {
-                            getChatGroup(projectName);
-                        }
-                        else {
+        if(self.token) {
+            if (projectName == HELP_DESK) {
+                getChatGroup(projectName + '-' + self.username);
+            }
+            else {
+                if (projectName) {
+                    if (self.conver.id) socket.emit('off-project', { idConversation: self.conver.id, username: self.user.username });
+                    getListUser(projectName, projectOwner, function (res) {
+                        if (res) {
+                            self.listUser = res;
+                            if (self.listUser.length >= 2) {
+                                getChatGroup(projectName, self.listUser);
+                            }
+                            else {
+                                self.showChatGroup = false;
+                                self.showHelpDesk = false;
+                            }
+                        } else {
+                            self.listUser = [];
                             self.showChatGroup = false;
                             self.showHelpDesk = false;
                         }
-                    } else {
-                        self.listUser = [];
-                        self.showChatGroup = false;
-                        self.showHelpDesk = false;
-                    }
-                });
-            } else {
-                self.projectName = '';
-                if (self.conver.id)
-                    socket.emit('off-project', { idConversation: self.conver.id, username: self.user.username });
+                    });
+                } else {
+                    self.projectName = '';
+                    if (self.conver.id)
+                        socket.emit('off-project', { idConversation: self.conver.id, username: self.user.username });
+                }
             }
         }
     }

@@ -8,17 +8,17 @@
 </div> -->
 
 <!-- <img
- class="main-img" 
- id="{{imgPreview._img}}" 
- src="{{imgPreview.source}}" 
- alt="failed to load image" 
+ class="main-img"
+ id="{{imgPreview._img}}"
+ src="{{imgPreview.source}}"
+ alt="failed to load image"
  style="width:100%;max-width:300px"
  ng-click="imgPreview.imgOnclick()"> -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
 <div class="img-preview">
-    <img class="main-img" src="{{imgPreview.smallImgLink}}" alt="failed to load image" style="width:100%;max-width:300px;z-index: 1002;"
+    <img class="main-img" ng-src="{{imgPreview.smallImgLink}}" alt="failed to load image" style="width:100%;max-width:300px;z-index: 1002;"
         ng-click="imgPreview.imgOnclick()">
 
     <!-- The Modal -->
@@ -38,7 +38,7 @@
             </a>
         </span>
         <figure class="zoom" id="{{imgPreview._zoomBackground}}">
-            <img src="{{imgPreview.fullImgLink}}" class="modal-content" id="{{imgPreview._modalImg}}">
+            <img ng-src="{{imgPreview.fullImgLink}}" class="modal-content" id="{{imgPreview._modalImg}}">
         </figure>
     </div>
 </div>
