@@ -1,4 +1,3 @@
 <div class="chat-message">
-    <!-- <div class="ninja-icon"></div> -->
-    <div style="color: {{chatMessage.color}}; white-space: pre-line" ng-bind-html="chatMessage.text"></div>
+    <div style="color: {{chatMessage.color}}; white-space: pre-line" ng-bind-html="chatMessage.getHtml()"></div>
 </div>
